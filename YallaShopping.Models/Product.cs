@@ -41,8 +41,7 @@ namespace YallaShopping.Models
         [ForeignKey("CategoryId")]
         [ValidateNever]
         public Category Category{ get; set; }
-        [Required]
         [ValidateNever]
-        public string ImageURL { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; }
     }
 }

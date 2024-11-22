@@ -31,8 +31,10 @@ namespace YallaShopping_Web.Areas.Customer.Controllers
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userID, includeProperties: "Product"),
                 OrderHeader=new()
             };
+            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
+                cart.Product.ProductImages=productImages.Where(i=>i.ProductId==cart.Product.Id).ToList();
                 cart.Price = GetPriceBasedOnQuantity(cart);
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
@@ -152,7 +154,7 @@ namespace YallaShopping_Web.Areas.Customer.Controllers
 			{
                 //it is a regular customer account and we need to capture payment
                 //stripe logic
-                var domain = "https://localhost:7221/";
+                var domain = Request.Scheme+"://"+Request.Host.Value+"/";
 				var options = new Stripe.Checkout.SessionCreateOptions
 				{
 					SuccessUrl = domain+ $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",

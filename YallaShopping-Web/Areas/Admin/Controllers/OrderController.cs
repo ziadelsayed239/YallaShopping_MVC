@@ -132,7 +132,8 @@ namespace YallaShopping_Web.Areas.Admin.Controllers
                  includeProperties: "Product");
 
             //stripe logic
-            var domain = "https://localhost:7221/";
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+            //var domain = "https://localhost:7221/";
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 SuccessUrl = domain + $"admin/order/PaymentConfirmation?orderHeaderId={OrderVM.OrderHeader.Id}",

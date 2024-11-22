@@ -12,7 +12,7 @@
         <div class="card-body p-4">
             <form asp-controller="Product" asp-action="Create_Update" class="row g-3" enctype="multipart/form-data">
                 <input asp-for="Product.Id" hidden/>
-                <input asp-for="Product.ImageURL" hidden />
+               
 
                 <div class="row">
                     <div class="col-10">
@@ -73,9 +73,9 @@
                                 </div>
                             </div>
                             <div class="mb-3 row align-items-center">
-                                <label asp-for="Product.ImageURL" class="form-label col-sm-3 text-muted fw-semibold"></label>
+                                <label asp-for="Product.ProductImages" class="form-label col-sm-3 text-muted fw-semibold"></label>
                                 <div class="col-sm-9">
-                                    <input type="file" name="file" class="form-control shadow-sm" value="@Model?.Product.ImageURL" placeholder="Enter Image URL" />
+                                    <input type="file" name="files" class="form-control shadow-sm" value="@Model?.Product.ProductImages" placeholder="Enter Image URL" multiple />
                                 </div>
                             </div>
 
@@ -113,9 +113,21 @@
 
                     </div>
                     <div class="col-2">
-                        <img src="@Model.Product.ImageURL" width="100%"
-                             style="border-radius:5px;border:1px solid"
-                             onclick="openImageModal(this.src)" />
+                        @if(Model.Product.ProductImages!=null)
+                        {
+                            foreach(var image in Model.Product.ProductImages)
+                            {
+                                <div class="border p-1 m-2 text-center">
+                                    <img src="@image.ImageUrl" width="100%"
+                                         style="border-radius:5px;border:1px solid"
+                                         onclick="openImageModal(this.src)" />
+                                         <h6> </h6>
+                                    <a class="btn btn-outline-danger shadow-sm btn-sm" asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+                                             <i class="bi bi-trash-fill"></i>
+                                         </a>
+                                </div>
+                            }
+                        }
                     </div>
 
                     <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000;">

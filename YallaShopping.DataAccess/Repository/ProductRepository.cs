@@ -21,12 +21,20 @@ namespace YallaShopping.DataAccess.Repository
 
         public void Update(Product product)
         {
-            var existingEntity = _db.Products.Local.FirstOrDefault(p => p.Id == product.Id);
-            if (existingEntity != null)
+            var objFromDb = _db.Products.FirstOrDefault(p => p.Id == product.Id);
+            if (objFromDb != null)
             {
-                _db.Entry(existingEntity).State = EntityState.Detached;
+                objFromDb.Title = product.Title;
+                objFromDb.Description = product.Description;
+                objFromDb.Price = product.Price;
+                objFromDb.Price50 = product.Price50;
+                objFromDb.Price100 = product.Price100;
+                objFromDb.ISBN = product.ISBN;
+                objFromDb.ListPrice = product.ListPrice;
+                objFromDb.CategoryId = product.CategoryId;
+                objFromDb.Author = product.Author;
+                objFromDb.ProductImages = product.ProductImages;
             }
-            _db.Products.Update(product);
         }
 
     }
